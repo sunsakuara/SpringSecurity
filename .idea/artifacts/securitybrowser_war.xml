@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="securitybrowser:war">
+    <output-path>$PROJECT_DIR$/securitybrowser/target</output-path>
+    <root id="archive" name="securitybrowser.war">
+      <element id="artifact" artifact-name="securitybrowser:war exploded" />
+    </root>
+  </artifact>
+</component>

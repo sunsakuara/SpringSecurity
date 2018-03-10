@@ -2,6 +2,7 @@ package net.zhuruyi.DTO;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import java.util.Date;
+import javax.validation.constraints.Past;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -14,8 +15,9 @@ public class User {
 
     private Long id;
     private String userName;
-    @NotBlank
+    @NotBlank(message = "密码不能为空")
     private String password;
+    @Past
     private Date birthday;
 
     public Long getId() {

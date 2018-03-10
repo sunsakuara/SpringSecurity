@@ -7,6 +7,8 @@ package net.zhuruyi.controller;
  * @Modified By:
  */
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
@@ -78,6 +80,25 @@ public class UserControllerTest {
         String content =
                 "{\"userName\":\"tom\",\"password\":null,\"birthday\":" + date.getTime() + "}";
         String result = mockMvc.perform(MockMvcRequestBuilders.post("/user")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(content))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value("1"))
+                .andReturn().getResponse().getContentAsString();
+
+        System.out.println(result);
+    }
+
+
+    @Test
+    public void whenUpdateSuccess() throws Exception {
+        Date date = new Date(
+                LocalDateTime.now().plusYears(1).atZone(ZoneId.systemDefault()).toInstant()
+                        .toEpochMilli());
+        String content =
+                "{\"userName\":\"tom\",\"password\":123,\"birthday\":" + date.getTime() + "}";
+
+        String result = mockMvc.perform(MockMvcRequestBuilders.put("/user/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(content))
                 .andExpect(MockMvcResultMatchers.status().isOk())

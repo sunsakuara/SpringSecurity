@@ -12,9 +12,11 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,7 +56,7 @@ public class UserController {
         System.out.println(pageable.getPageNumber());
         System.out.println(pageable.getSort());
 
-        List<User> users = new ArrayList<User>();
+        List<User> users = new ArrayList<>();
         users.add(new User());
         users.add(new User());
         users.add(new User());
@@ -67,6 +69,24 @@ public class UserController {
     public User getInfo(@PathVariable("id") String id) {
         User user = new User();
         user.setUserName("tom");
+        return user;
+    }
+
+    @PutMapping(value = "{id:\\d+}")
+    public User updateInfo(@Valid @RequestBody User user, BindingResult errors) {
+        if (errors.hasErrors()) {
+            errors.getAllErrors().stream()
+                    .forEach(error -> {
+                        FieldError fieldError = (FieldError) error;
+                        String message = fieldError.getField() + "=" + error.getDefaultMessage();
+                        System.out.println(message);
+                    });
+        }
+
+        user.setId(1L);
+        user.setUserName("zhuruyi");
+        user.setPassword("1234");
+
         return user;
     }
 

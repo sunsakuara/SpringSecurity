@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 import net.zhuruyi.dto.User;
 import net.zhuruyi.dto.UserQueryCondition;
+import net.zhuruyi.exception.UserNotExistException;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.data.domain.Pageable;
@@ -95,6 +96,11 @@ public class UserController {
     public void whenDeleted(@PathVariable String id) {
         System.out.println(id);
 
+    }
+
+    @GetMapping("/exception")
+    public void whenException() {
+        throw new UserNotExistException();
     }
 
 }

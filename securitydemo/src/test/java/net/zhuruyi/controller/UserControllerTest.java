@@ -110,12 +110,18 @@ public class UserControllerTest {
 
     @Test
     public void whenDeleted() throws Exception {
-        String result = mockMvc.perform(MockMvcRequestBuilders.delete("/user/1")
+        String result = mockMvc.perform(MockMvcRequestBuilders.delete("/user/exception")
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
         System.out.println(result);
+    }
+
+    @Test
+    public void whenException() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/exception")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 }

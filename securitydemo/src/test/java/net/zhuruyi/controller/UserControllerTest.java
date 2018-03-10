@@ -96,13 +96,23 @@ public class UserControllerTest {
                 LocalDateTime.now().plusYears(1).atZone(ZoneId.systemDefault()).toInstant()
                         .toEpochMilli());
         String content =
-                "{\"userName\":\"tom\",\"password\":123,\"birthday\":" + date.getTime() + "}";
+                "{\"userName\":\"tom\",\"password\":null,\"birthday\":" + date.getTime() + "}";
 
         String result = mockMvc.perform(MockMvcRequestBuilders.put("/user/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(content))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value("1"))
+                .andReturn().getResponse().getContentAsString();
+
+        System.out.println(result);
+    }
+
+    @Test
+    public void whenDeleted() throws Exception {
+        String result = mockMvc.perform(MockMvcRequestBuilders.delete("/user/1")
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
         System.out.println(result);

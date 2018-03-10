@@ -1,8 +1,9 @@
-package net.zhuruyi.DTO;
+package net.zhuruyi.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import java.util.Date;
 import javax.validation.constraints.Past;
+import net.zhuruyi.validator.MyConstraint;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -14,6 +15,7 @@ import org.hibernate.validator.constraints.NotBlank;
 public class User {
 
     private Long id;
+    @MyConstraint(message = "这是一个测试")
     private String userName;
     @NotBlank(message = "密码不能为空")
     private String password;

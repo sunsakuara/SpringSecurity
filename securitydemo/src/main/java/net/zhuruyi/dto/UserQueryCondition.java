@@ -1,4 +1,4 @@
-package net.zhuruyi.DTO;
+package net.zhuruyi.dto;
 
 /**
  * @Author :zhuruyi

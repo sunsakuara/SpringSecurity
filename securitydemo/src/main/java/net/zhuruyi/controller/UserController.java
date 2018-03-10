@@ -5,14 +5,15 @@ import com.fasterxml.jackson.annotation.JsonView;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
-import net.zhuruyi.DTO.User;
-import net.zhuruyi.DTO.UserQueryCondition;
+import net.zhuruyi.dto.User;
+import net.zhuruyi.dto.UserQueryCondition;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,7 +73,7 @@ public class UserController {
         return user;
     }
 
-    @PutMapping(value = "{id:\\d+}")
+    @PutMapping(value = "/{id:\\d+}")
     public User updateInfo(@Valid @RequestBody User user, BindingResult errors) {
         if (errors.hasErrors()) {
             errors.getAllErrors().stream()
@@ -88,6 +89,12 @@ public class UserController {
         user.setPassword("1234");
 
         return user;
+    }
+
+    @DeleteMapping("/{id:\\d+}")
+    public void whenDeleted(@PathVariable String id) {
+        System.out.println(id);
+
     }
 
 }

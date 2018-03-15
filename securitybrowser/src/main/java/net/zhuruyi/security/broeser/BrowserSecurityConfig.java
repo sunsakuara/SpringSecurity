@@ -1,5 +1,6 @@
 package net.zhuruyi.security.broeser;
 
+import net.zhuruyi.security.broeser.authentication.AuthenticationSuccessHandler;
 import net.zhuruyi.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 /**
  * @Author :zhuruyi
@@ -21,6 +23,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SecurityProperties securityProperties;
 
+    @Autowired
+    private AuthenticationSuccessHandler handler;
+
+    @Autowired
+    private AuthenticationFailureHandler failureHandler;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
 
@@ -32,6 +40,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .loginPage("/authentication/require")/*指定登陸界面所在的URL*/
                 .loginProcessingUrl("/authentication/form")
+                .successHandler(handler)
+                .failureHandler(failureHandler)
        /* http.httpBasic()*/
                 .and()
                 .authorizeRequests()

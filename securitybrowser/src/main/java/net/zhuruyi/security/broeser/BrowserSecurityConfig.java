@@ -1,6 +1,7 @@
 package net.zhuruyi.security.broeser;
 
 import net.zhuruyi.security.broeser.authentication.AuthenticationSuccessHandler;
+import net.zhuruyi.security.core.Validata.code.ValidateCodeFilter;
 import net.zhuruyi.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @Author :zhuruyi
@@ -37,7 +39,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
+        ValidateCodeFilter codeFilter = new ValidateCodeFilter();
+        codeFilter.setAuthenticationFailHande(failureHandler);
+        http.addFilterBefore(codeFilter, UsernamePasswordAuthenticationFilter.class)
+                .formLogin()
                 .loginPage("/authentication/require")/*指定登陸界面所在的URL*/
                 .loginProcessingUrl("/authentication/form")
                 .successHandler(handler)
@@ -46,7 +51,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/authentication/require",
-                        securityProperties.getBrowser().getLoginPage()).permitAll()
+                        securityProperties.getBrowser().getLoginPage(), "/code/image").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

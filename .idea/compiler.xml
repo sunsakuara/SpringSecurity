@@ -16,7 +16,7 @@
     <bytecodeTargetLevel target="1.8">
       <module name="securityapp" target="1.6" />
       <module name="securitybrowser" target="1.6" />
-      <module name="securitycore" target="1.6" />
+      <module name="securitycore" target="1.8" />
       <module name="securitydemo" target="1.8" />
       <module name="SecurityProject" target="1.6" />
     </bytecodeTargetLevel>

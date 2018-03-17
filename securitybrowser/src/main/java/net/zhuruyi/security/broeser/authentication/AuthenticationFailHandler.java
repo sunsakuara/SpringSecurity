@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import net.zhuruyi.security.broeser.support.SimpleResponse;
 import net.zhuruyi.security.core.properties.LoginType;
 import net.zhuruyi.security.core.properties.SecurityProperties;
 import org.slf4j.Logger;
@@ -41,7 +42,8 @@ public class AuthenticationFailHandler extends ExceptionMappingAuthenticationFai
         if (LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
             httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             httpServletResponse.setContentType("application/json;charset=UTF-8");
-            httpServletResponse.getWriter().write(objectMapper.writeValueAsString(e));
+            httpServletResponse.getWriter()
+                    .write(objectMapper.writeValueAsString(new SimpleResponse(e.getMessage())));
         } else {
             super.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
         }

@@ -41,6 +41,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         ValidateCodeFilter codeFilter = new ValidateCodeFilter();
         codeFilter.setAuthenticationFailHande(failureHandler);
+        codeFilter.setSecurityProperties(securityProperties);
+        codeFilter.afterPropertiesSet();
         http.addFilterBefore(codeFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
                 .loginPage("/authentication/require")/*指定登陸界面所在的URL*/

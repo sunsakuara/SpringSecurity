@@ -8,6 +8,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import org.springframework.stereotype.Component;
 
 /**
  * @Author :zhuruyi
@@ -15,23 +16,23 @@ import javax.servlet.ServletResponse;
  * @Date:Create in 16:34 2018/3/10
  * @Modified By:
  */
-/*@Component*/
+@Component
 public class TimeFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("time filter init");
+        // System.out.println("time filter init");
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
             FilterChain filterChain) throws IOException, ServletException {
 
-        System.out.println("time filter start");
+        //System.out.println("time filter start");
         Long start = new Date().getTime();
         filterChain.doFilter(servletRequest, servletResponse);
-        System.out.println("file fileter:耗時" + (new Date().getTime() - start));
-        System.out.println("time filter end");
+        // System.out.println("file fileter:耗時" + (new Date().getTime() - start));
+        // System.out.println("time filter end");
 
     }
 

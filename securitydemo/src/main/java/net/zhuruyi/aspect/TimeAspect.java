@@ -18,7 +18,7 @@ public class TimeAspect {
 
     @Around("execution(* net.zhuruyi.controller.UserController.*(..))")
     public Object handleControllerMethod(ProceedingJoinPoint pjp) throws Throwable {
-        System.out.println("time aspect start");
+        // System.out.println("time aspect start");
         Object[] args = pjp.getArgs();
         for (Object arg : args) {
             System.out.println("arg is" + arg);
@@ -26,9 +26,9 @@ public class TimeAspect {
 
         Long start = new Date().getTime();
         Object o = pjp.proceed();
-        System.out.println();
+       /* System.out.println();
         System.out.println("file fileter:耗時" + (new Date().getTime() - start));
-        System.out.println("time aspect end");
+        System.out.println("time aspect end");*/
 
         return o;
     }

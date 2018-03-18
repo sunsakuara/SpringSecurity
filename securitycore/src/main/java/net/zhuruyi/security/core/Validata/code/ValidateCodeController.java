@@ -31,10 +31,13 @@ public class ValidateCodeController {
     @GetMapping("/code/image")
     public void createCode(HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse) throws IOException {
+        //1。生成一個隨機數
         ImageCode imageCode = validateCodeGenerator
                 .generate(new ServletWebRequest(httpServletRequest));
+        //2.将随机数传入session中
         sessionStrategy
                 .setAttribute(new ServletWebRequest(httpServletRequest), SESSION_KEY, imageCode);
+        //3.将图片写入到响应中
         ImageIO.write(imageCode.getImage(), "JPEG", httpServletResponse.getOutputStream());
     }
 

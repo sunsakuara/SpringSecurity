@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.zhuruyi.security.core.properties.SecurityProperties;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
@@ -24,14 +25,28 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @Date:Create in 10:38 2018/3/17
  * @Modified By:
  */
-public class ValidateCodeFilter extends OncePerRequestFilter {
+public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
 
     private final SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
-    private final Set<String> urls = new HashSet<>();
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
+    private Set<String> urls = new HashSet<>();
     private SecurityProperties securityProperties;
     private AuthenticationFailureHandler authenticationFailHande;
+
+    @Override
+    public void afterPropertiesSet() throws ServletException {
+        super.afterPropertiesSet();
+        String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(
+                securityProperties.getCode().getImage().getUrl(), ",");
+        if (configUrls != null && configUrls.length > 0) {
+            for (String configUrl : configUrls) {
+                urls.add(configUrl);
+            }
+        }
+
+        urls.add("/authentication/form");
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
@@ -78,16 +93,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         sessionStrategy.removeAttribute(resuest, ValidateCodeController.SESSION_KEY);
     }
 
-    @Override
-    public void afterPropertiesSet() throws ServletException {
-        super.afterPropertiesSet();
-        String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(
-                securityProperties.getCode().getImage().getUrl(), ",");
-        for (String configUrl : configUrls) {
-            urls.add(configUrl);
-        }
-        urls.add("/authentication/form");
-    }
 
     public AuthenticationFailureHandler getAuthenticationFailHande() {
         return authenticationFailHande;
@@ -105,6 +110,14 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     public void setSecurityProperties(
             SecurityProperties securityProperties) {
         this.securityProperties = securityProperties;
+    }
+
+    public Set<String> getUrls() {
+        return urls;
+    }
+
+    public void setUrls(Set<String> urls) {
+        this.urls = urls;
     }
 }
 

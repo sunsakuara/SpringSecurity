@@ -40,10 +40,11 @@ public class BroeserSecurityController {
      * 当身份认证时，跳转到这里
      */
     @RequestMapping(value = "/authentication/require", method = RequestMethod.GET)
-    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)//401狀態碼
     public SimpleResponse requireAuthentication(
             HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        //判斷引發跳轉的是不是一個html
         SavedRequest savedRequest = requestCache.getRequest(request, response);
 
         if (savedRequest != null) {
@@ -56,7 +57,7 @@ public class BroeserSecurityController {
 
         }
 
-        return new SimpleResponse("访问的服务需要省份认证，请应道用户到登录页");
+        return new SimpleResponse("访问的服务需要省份认证，请引导用户到登录页");
     }
 
 }

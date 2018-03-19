@@ -1,10 +1,11 @@
-package net.zhuruyi.security.core.Validata.code;
+package net.zhuruyi.security.core.Validata.code.image;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
+import net.zhuruyi.security.core.Validata.code.ValidateCodeGenerator;
 import net.zhuruyi.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;

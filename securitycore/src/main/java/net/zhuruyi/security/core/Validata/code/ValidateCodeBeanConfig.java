@@ -1,5 +1,8 @@
 package net.zhuruyi.security.core.Validata.code;
 
+import net.zhuruyi.security.core.Validata.code.image.ImageCodeGenerator;
+import net.zhuruyi.security.core.Validata.code.sms.DefaultSmsCodeSender;
+import net.zhuruyi.security.core.Validata.code.sms.SmsCodeSender;
 import net.zhuruyi.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -25,5 +28,11 @@ public class ValidateCodeBeanConfig {
         ImageCodeGenerator codeGenerator = new ImageCodeGenerator();
         codeGenerator.setSecurityProperties(securityProperties);
         return codeGenerator;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(SmsCodeSender.class)
+    public SmsCodeSender SmsCodeSender() {
+        return new DefaultSmsCodeSender();
     }
 }

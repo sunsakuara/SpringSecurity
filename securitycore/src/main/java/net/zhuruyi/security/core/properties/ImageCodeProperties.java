@@ -6,13 +6,14 @@ package net.zhuruyi.security.core.properties;
  * @Date:Create in 11:55 2018/3/17
  * @Modified By:
  */
-public class ImageCodeProperties {
+public class ImageCodeProperties extends SmsCodeProperties {
 
     private int width = 67;
     private int height = 23;
-    private int length = 4;
-    private int expireIn = 60;
-    private String url;
+
+    public ImageCodeProperties() {
+        setLength(4);
+    }
 
     public int getWidth() {
         return width;
@@ -30,27 +31,4 @@ public class ImageCodeProperties {
         this.height = height;
     }
 
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public int getExpireIn() {
-        return expireIn;
-    }
-
-    public void setExpireIn(int expireIn) {
-        this.expireIn = expireIn;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }

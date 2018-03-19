@@ -2,7 +2,9 @@ package net.zhuruyi.security.broeser;
 
 
 import net.zhuruyi.security.broeser.authentication.AuthenticationSuccessHandler;
+import net.zhuruyi.security.core.Validata.code.SmsCodeFilter;
 import net.zhuruyi.security.core.Validata.code.ValidateCodeFilter;
+import net.zhuruyi.security.core.authtication.mobile.SmsCodeAuthenticationSecurityConfig;
 import net.zhuruyi.security.core.properties.SecurityProperties;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
 
@@ -68,12 +73,21 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //图形验证码配置
         ValidateCodeFilter codeFilter = new ValidateCodeFilter();
         codeFilter.setAuthenticationFailHande(failureHandler);
         codeFilter.setSecurityProperties(securityProperties);
         codeFilter.afterPropertiesSet();
+        //短信验证码配置
+        SmsCodeFilter smsFilter = new SmsCodeFilter();
+        smsFilter.setAuthenticationFailHande(failureHandler);
+        smsFilter.setSecurityProperties(securityProperties);
+        smsFilter.afterPropertiesSet();
+
         http.addFilterBefore(codeFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(smsFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
+                /*图形验证码*/
                 .loginPage("/authentication/require")/*指定登陸界面所在的URL*/
                 .loginProcessingUrl("/authentication/form")
                 .successHandler(handler)
@@ -92,6 +106,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 /*防护*/
-                .csrf().disable();
+                .csrf().disable()
+                .apply(smsCodeAuthenticationSecurityConfig);
     }
 }

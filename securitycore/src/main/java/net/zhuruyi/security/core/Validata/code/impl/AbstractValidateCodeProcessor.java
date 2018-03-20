@@ -10,6 +10,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**
@@ -25,7 +27,9 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
      * 操作session的工具类
      */
     private final SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
-
+    /**
+     * 收集系统中所有的 {@link ValidateCodeGenerator} 接口的实现。
+     */
     @Autowired
     private Map<String, ValidateCodeGenerator> validateCodeGeneratos;
 
@@ -73,6 +77,42 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
     }
 
     protected abstract void send(ServletWebRequest request, C calidateCode) throws Exception;
+
+    @Override
+    public void validate(ServletWebRequest request) {
+
+        ValidateCodeType processorType = getValidateCodeType(request);
+        String sessionKey = getSessionKey(request);
+
+        C codeInSession = (C) sessionStrategy.getAttribute(request, sessionKey);
+
+        String codeInRequest;
+        try {
+            codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(),
+                    processorType.getParamNameOnValidate());
+        } catch (ServletRequestBindingException e) {
+            throw new ValidateCodeException("获取验证码的值失败");
+        }
+
+        if (StringUtils.isBlank(codeInRequest)) {
+            throw new ValidateCodeException(processorType + "验证码的值不能为空");
+        }
+
+        if (codeInSession == null) {
+            throw new ValidateCodeException(processorType + "验证码不存在");
+        }
+
+        if (codeInSession.isExpried()) {
+            sessionStrategy.removeAttribute(request, sessionKey);
+            throw new ValidateCodeException(processorType + "验证码已过期");
+        }
+
+        if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
+            throw new ValidateCodeException(processorType + "验证码不匹配");
+        }
+
+        sessionStrategy.removeAttribute(request, sessionKey);
+    }
 
 
 }

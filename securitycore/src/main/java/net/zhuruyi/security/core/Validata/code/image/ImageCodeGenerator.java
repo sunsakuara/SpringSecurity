@@ -32,9 +32,6 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
         int height = ServletRequestUtils.getIntParameter(httpServletRequest.getRequest(), "height",
                 securityProperties.getCode().getImage().getHeight());
 
-        securityProperties.getCode().getImage().getWidth();
-        securityProperties.getCode().getImage().getHeight();
-
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         Graphics g = image.getGraphics();

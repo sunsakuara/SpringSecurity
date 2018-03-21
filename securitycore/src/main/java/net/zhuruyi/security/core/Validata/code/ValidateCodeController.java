@@ -62,7 +62,6 @@ public class ValidateCodeController {
         String mobile = ServletRequestUtils
                 .getRequiredStringParameter(httpServletRequest, "mobile");
         smsCodeSender.send(mobile, smsgeCode.getCode());
-
     }*/
 
     @GetMapping("/code/{type}")

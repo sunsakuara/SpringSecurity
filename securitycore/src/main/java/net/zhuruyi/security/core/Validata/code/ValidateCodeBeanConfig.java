@@ -22,9 +22,13 @@ public class ValidateCodeBeanConfig {
     @Autowired
     private SecurityProperties securityProperties;
 
+
+    /**
+     * @ConditionalOnMissingBean 仅仅在当前上下文中不存在某个对象时，才会实例化一个Bean
+     */
     @Bean
-    @ConditionalOnMissingBean(name = "imageCodeGenerator")
-    public ValidateCodeGenerator imageCodeGenerator() {
+    @ConditionalOnMissingBean(name = "imageValidateCodeGenerator")
+    public ValidateCodeGenerator imageValidateCodeGenerator() {
         ImageCodeGenerator codeGenerator = new ImageCodeGenerator();
         codeGenerator.setSecurityProperties(securityProperties);
         return codeGenerator;

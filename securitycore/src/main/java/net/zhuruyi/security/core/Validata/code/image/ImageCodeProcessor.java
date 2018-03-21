@@ -11,7 +11,7 @@ import org.springframework.web.context.request.ServletWebRequest;
  * @Date:Create in 23:08 2018/3/18
  * @Modified By:
  */
-@Component("imageCodeProcessor")
+@Component("imageValidateCodeProcessor")
 public class ImageCodeProcessor extends AbstractValidateCodeProcessor<ImageCode> {
 
     @Override

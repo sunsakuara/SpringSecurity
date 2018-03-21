@@ -99,6 +99,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
                 return;
             }
         }
+        //将请求转发给过滤器链上下一个对象
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
     /**
@@ -116,37 +118,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         }
         return result;
     }
-
-    /*private void validate(ServletWebRequest resuest) throws ServletRequestBindingException {
-        ImageCode codeInSession = (ImageCode) sessionStrategy
-                .getAttribute(resuest, ValidateCodeController.SESSION_KEY);
-        String codeInRequest = ServletRequestUtils
-                .getStringParameter(resuest.getRequest(), "imageCode");
-
-        if (StringUtils.isBlank(codeInRequest)) {
-            throw new ValidateCodeException("验证码的值不能为空");
-        }
-        if (codeInSession == null) {
-            throw new ValidateCodeException("验证码不存在");
-        }
-        if (codeInSession.isExpried()) {
-            sessionStrategy.removeAttribute(resuest, ValidateCodeController.SESSION_KEY);
-            throw new ValidateCodeException("验证码已过期");
-        }
-        if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
-            throw new ValidateCodeException("验证码不匹配");
-        }
-        sessionStrategy.removeAttribute(resuest, ValidateCodeController.SESSION_KEY);
-    }*/
-
-   /* public SecurityProperties getSecurityProperties() {
-        return securityProperties;
-    }
-
-    public void setSecurityProperties(
-            SecurityProperties securityProperties) {
-        this.securityProperties = securityProperties;
-    }*/
 }
 
 

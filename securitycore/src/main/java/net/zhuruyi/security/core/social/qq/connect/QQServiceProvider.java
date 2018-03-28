@@ -19,7 +19,12 @@ public class QQServiceProvider extends AbstractOAuth2ServiceProvider<QQ> {
 
     public QQServiceProvider(
             String appId, String appSecret) {
+        /**TODO QQ互联 appId：用户名账户 appSercrect 用户名密码*/
+        /**
+         * URL_AUTHORRIZE 第一步
+         * URL_ACCESS_TOKEN 第4步*/
         super(new OAuth2Template(appId, appSecret, URL_AUTHORRIZE, URL_ACCESS_TOKEN));
+
     }
 
     @Override

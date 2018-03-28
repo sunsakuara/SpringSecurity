@@ -23,13 +23,15 @@ public class QQAdapter implements ApiAdapter<QQ> {
     }
 
     /**
-     * 做适配
+     * connection api做适配
      */
     @Override
     public void setConnectionValues(QQ qq, ConnectionValues connectionValues) {
-       
+
         QQUserInfo qqUserInfo = qq.getUserInfo();
+        //设置昵称
         connectionValues.setDisplayName(qqUserInfo.getNickname());
+        //设置头像
         connectionValues.setImageUrl(qqUserInfo.getFigureurl_qq_1());
         /**个人主页的URL*/
         connectionValues.setProfileUrl(null);
